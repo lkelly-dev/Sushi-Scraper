@@ -5,44 +5,54 @@ var cheerio = require('cheerio');
 var app     = express();
 
 app.get('/scrape', function(req, res){
-  // Let's scrape Anchorman 2
-  url = 'http://www.imdb.com/title/tt1229340/';
+
+  url = 'https://www.foodora.ca/restaurant/q1sd/springsushi';
 
 
-  
+
 
   request(url, function(error, response, html){
     if(!error){
       var $ = cheerio.load(html);
 
-      var title, release, rating;
-      var json = { title : "", release : "", rating : ""};
+      var name, price;
+      var json = { name : "", price : ""};
+      
+      var items = [];
+      var prices = [];
 
-      $('.title_wrapper').filter(function(){
+
+
+      $('.menu__item__name').each(function(i, elem) {
         var data = $(this);
-        title = data.children().first().text().trim();
-        release = data.children().last().children().last().text().trim();
+        items[i] = $(this).text().trim().replace(/[\n\t\r]/g,"");
 
-        json.title = title;
-        json.release = release;
-      })
+        json.name = items;
+      });
 
-      $('.ratingValue').filter(function(){
+      $('.menu__item__price').each(function(i, elem) {
         var data = $(this);
-        rating = data.text().trim();
+        prices[i] = $(this).text().trim().replace(/[\n\t\r]/g,"");
 
-        json.rating = rating;
-      })
-    }
+        json.price = prices;
+      });
+
+
+     }
+
+     var a = items.indexOf("Spring Roll");
+     var b = prices[a];
+     console.log("The price of a spring roll is "+ b);
+
 
     fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
       console.log('File successfully written! - Check your project directory for the output.json file');
     })
 
-    res.send('Check your console!')
+    res.send(JSON.stringify(json, null, 4))
   })
 })
 
 app.listen('8081')
-console.log('Magic happens on port 8081');
+console.log('Server started on port 8081');
 exports = module.exports = app;
