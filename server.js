@@ -9,7 +9,12 @@ app.get('/scrape', function(req, res){
   url = 'https://www.foodora.ca/restaurant/q1sd/springsushi';
 
 
-
+  function searchStringInArray (str, strArray) {
+      for (var j=0; j<strArray.length; j++) {
+          if (strArray[j].toUpperCase().match(str)) return j;
+      }
+      return -1;
+  }
 
   request(url, function(error, response, html){
     if(!error){
@@ -17,10 +22,9 @@ app.get('/scrape', function(req, res){
 
       var name, price;
       var json = { name : "", price : ""};
-      
+
       var items = [];
       var prices = [];
-
 
 
       $('.menu__item__name').each(function(i, elem) {
@@ -39,14 +43,23 @@ app.get('/scrape', function(req, res){
 
 
      }
+     else {
+       console.log(error);
+       console.log("ERROR");
+     }
 
-     var a = items.indexOf("Spring Roll");
-     var b = prices[a];
-     console.log("The price of a spring roll is "+ b);
+     var spring_roll = prices[searchStringInArray("SPRING ROLL", items)];
+     console.log("The price of a spring roll is "+ spring_roll);
+
+     var tuna_roll = prices[searchStringInArray("SPICY TUNA ROLL", items)];
+     console.log("The price of a spicy tuna roll is "+ tuna_roll);
+
+     var california_roll = prices[searchStringInArray("CALIFORNIA ROLL", items)];
+     console.log("The price of a California roll is "+ california_roll);
 
 
     fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
-      console.log('File successfully written! - Check your project directory for the output.json file');
+      console.log('File successfully written!');
     })
 
     res.send(JSON.stringify(json, null, 4))
