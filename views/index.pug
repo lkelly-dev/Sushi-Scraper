@@ -1,0 +1,17 @@
+html
+  head
+  link(rel='stylesheet', href='/styles.css', type='text/css')
+  title= title
+  body
+    h1.title= title
+
+    block content
+        p.basic-text= message
+        h2.basic-text= myzip
+        form(name="add-estimation", method="post")
+            div.input
+                textarea(name="zipcode", cols="30", rows="3")
+            span.label Zipcode
+            div.actions
+                input(type="submit", value="Submit")#add_button
+        p.basic-text= costs

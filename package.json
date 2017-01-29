@@ -1,12 +1,14 @@
 {
-  "name"         : "node-web-scrape",
-  "version"      : "0.0.1",
-  "description"  : "Scrape the web.",
-  "main"         : "server.js",
-  "author"       : "Liam",
-  "dependencies" : {
-    "express"    : "latest",
-    "request"    : "latest",
-    "cheerio"    : "latest"
+  "name": "node-web-scrape",
+  "version": "0.0.1",
+  "description": "Scrape the web.",
+  "main": "server.js",
+  "author": "Liam",
+  "dependencies": {
+    "body-parser": "latest",
+    "cheerio": "latest",
+    "express": "latest",
+    "pug": "^2.0.0-beta9",
+    "request": "latest"
   }
 }
